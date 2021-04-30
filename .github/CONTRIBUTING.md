@@ -4,14 +4,20 @@ Thank you for your interest in contributing to this project!
 
 * Report bugs
 * Request features
-* Fix bugs
-* Implement features
+* Make pull requests
 
 ## Code of Conduct
 
 Please see [CONTRIBUTING.md](.github/CONTRIBUTING.md).
 
-## Guidelines
+## Reporting Bugs
+
+* Please create a [Minimal, Reproducible Example](https://stackoverflow.com/help/minimal-reproducible-example).
+* Please don't file an issue to ask a question.
+
+## Request features
+
+## Contributing to the Codebase
 
 ### Setup
 
