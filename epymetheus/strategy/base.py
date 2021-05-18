@@ -10,6 +10,7 @@ from .._utils import print_if_verbose
 from ..exceptions import NoTradeWarning
 from ..exceptions import NotRunError
 from ..metrics import metric_from_name
+from ..trade import Trade
 
 
 def create_strategy(f, **params):
@@ -203,6 +204,27 @@ class Strategy(abc.ABC):
 
         return pd.DataFrame(data)
 
+    def load(self, history, universe):
+        """
+        Load trade history and universe.
+
+        Parameters
+        ----------
+        history : pandas.DataFrame
+            History to load.
+        universe : pandas.DataFrame
+            Universe to load.
+
+        Return
+        ------
+        self : Strategy
+        """
+        self.universe = universe
+        self.trades = Trade.load_history(history)
+        for trade in self.trades:
+            trade.execute(universe)
+        return self
+
     def wealth(self) -> pd.Series:
         """
         Return `pandas.Series` of wealth.
@@ -306,8 +328,3 @@ class Strategy(abc.ABC):
             return f"strategy({fname}{param})"
         else:
             return self.__class__.__name__
-
-    def evaluate(self, metric):
-        raise DeprecationWarning(
-            "Strategy.evaluate(...) is deprecated. Use Strategy.score(...) instead."
-        )

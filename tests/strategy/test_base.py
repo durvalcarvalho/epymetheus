@@ -158,6 +158,17 @@ class TestStrategy:
         )
         pd.testing.assert_frame_equal(history, expected, check_dtype=False)
 
+    def test_load(self):
+        np.random.seed(42)
+        universe = make_randomwalk()
+        strategy = RandomStrategy().run(universe)
+        history = strategy.history()
+
+        strategy_load = RandomStrategy().load(history, universe)
+
+        pd.testing.assert_frame_equal(history, strategy_load.history())
+        pd.testing.assert_series_equal(strategy.wealth(), strategy_load.wealth())
+
     def test_history_notrunerror(self):
         strategy = RandomStrategy()
         with pytest.raises(NotRunError):
@@ -220,14 +231,6 @@ class TestStrategy:
 
         with pytest.raises(NotRunError):
             strategy.score(metric)
-
-    def test_score_deprecation_warning(self):
-        """
-        `strategy.evaluate` is deprecated
-        """
-        strategy = create_strategy(self.my_strategy, param_1=1.0, param_2=2.0)
-        with pytest.raises(DeprecationWarning):
-            strategy.evaluate(None)
 
     def test_repr(self):
         strategy = create_strategy(my_func, param_1=1.0, param_2=2.0)
